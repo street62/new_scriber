@@ -1,10 +1,14 @@
 package lee.newscriber.controller;
 
+import lee.newscriber.domain.Article;
+import lee.newscriber.domain.Source;
 import lee.newscriber.service.SourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -14,13 +18,13 @@ public class SourceController {
     private final SourceService sourceService;
 
     @GetMapping
-    public ResponseStatus<ArticleListResponse> loadSourceList() {
+    public ResponseEntity<List<Source>> loadSourceList() {
         return sourceService.loadSourceList();
     }
 
     @GetMapping("/{sourceId}")
-    public ResponseEntity<ArticleListResponse> loadArticlesFromSource(@PathVariable long sourceId) {
-        return sourceService.loadArticleFromSource(sourceId);
+    public ResponseEntity<List<Article>> loadArticlesFrom(@PathVariable long sourceId) {
+        return sourceService.loadArticlesFrom(sourceId);
     }
 
     @DeleteMapping("/{sourceId}")
@@ -32,7 +36,4 @@ public class SourceController {
     public ResponseStatus addNewSource(@RequestBody NewSourceRequest newSourceRequest) {
         return sourceService.addNewSource(NewSourceRequest);
     }
-
-
-
 }
