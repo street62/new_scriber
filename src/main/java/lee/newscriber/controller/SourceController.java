@@ -2,6 +2,7 @@ package lee.newscriber.controller;
 
 import lee.newscriber.domain.Article;
 import lee.newscriber.domain.Source;
+import lee.newscriber.dto.NewSourceRequest;
 import lee.newscriber.service.SourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,6 @@ public class SourceController {
 
     @PostMapping
     public ResponseStatus addNewSource(@RequestBody NewSourceRequest newSourceRequest) {
-        return sourceService.addNewSource(NewSourceRequest);
+        return sourceService.addNewSource(newSourceRequest);
     }
 }
