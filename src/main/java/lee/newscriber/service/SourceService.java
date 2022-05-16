@@ -2,6 +2,8 @@ package lee.newscriber.service;
 
 import lee.newscriber.domain.Article;
 import lee.newscriber.domain.Source;
+import lee.newscriber.dto.NewSourceRequest;
+import lee.newscriber.repository.SourceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
@@ -40,7 +42,7 @@ public class SourceService {
     }
 
     private void updateSource(long sourceId) throws IOException {
-        Source source = sourceRepository.getSource(sourceId);
+//        Source source = sourceRepository.getSource(sourceId);
         List<String> urlList = new ArrayList<>();
         Connection conn = Jsoup.connect("https://keepseeking.tistory.com/");
         Document document = conn.get();
@@ -51,4 +53,7 @@ public class SourceService {
     }
 
 
+    public ResponseStatus deleteSource(long sourceId) {
+        return null;
+    }
 }
