@@ -9,14 +9,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/sources")
 public class SourceController {
     private final SourceService sourceService;
+
+    public SourceController(SourceService sourceService) {
+        this.sourceService = sourceService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Source>> loadSourceList() {
@@ -24,7 +28,7 @@ public class SourceController {
     }
 
     @GetMapping("/{sourceId}")
-    public ResponseEntity<List<Article>> loadArticlesFrom(@PathVariable long sourceId) {
+    public ResponseEntity<List<Article>> loadArticlesFrom(@PathVariable long sourceId) throws IOException {
         return sourceService.loadArticlesFrom(sourceId);
     }
 
