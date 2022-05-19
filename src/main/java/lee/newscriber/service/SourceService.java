@@ -3,6 +3,7 @@ package lee.newscriber.service;
 import lee.newscriber.domain.Article;
 import lee.newscriber.domain.Source;
 import lee.newscriber.dto.NewSourceRequest;
+import lee.newscriber.repository.ArticleRepository;
 import lee.newscriber.repository.SourceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,25 +22,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+//@RequiredArgsConstructor
 @Service
-@RequiredArgsConstructor
 public class SourceService {
-    SourceRepository sourceRepository;
+    private final SourceRepository sourceRepository;
+    private final ArticleRepository articleRepository;
+
+    public SourceService(SourceRepository sourceRepository, ArticleRepository articleRepository) {
+        this.sourceRepository = sourceRepository;
+        this.articleRepository = articleRepository;
+    }
+
     public ResponseStatus addNewSource(NewSourceRequest newSourceRequest) {
 //        String url = newSourceRequest.getUrl();
 //        SourceType type = newSourceRequest.getSourceType();
 //
 //        ArrayList<SourceSampleData> sourceSampleData = newSourceRequest.getSampleData();
-
+        return null;
     }
 
     public ResponseEntity<List<Source>> loadSourceList() {
         sourceRepository.getSourceList();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    public ResponseEntity<List<Article>> loadArticlesFrom(long sourceId) {
+    public ResponseEntity<List<Article>> loadArticlesFrom(long sourceId) throws IOException {
         updateSource(sourceId);
         sourceRepository.getArticlesFrom(sourceId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     private void updateSource(long sourceId) throws IOException {
@@ -46,9 +57,16 @@ public class SourceService {
         List<String> urlList = new ArrayList<>();
         Connection conn = Jsoup.connect("https://keepseeking.tistory.com/");
         Document document = conn.get();
-        Elements titleElements = document.getElementsByClass("title-post");
-        for (Element element : titleElements) {
-            System.out.println(element);
+        Elements titles = document.getElementsByClass("title_post");
+        Article latestArticle = articleRepository.getLatestArticle(sourceId);
+        for (Element title : titles) {
+//            if (title.text().equals(latestArticle.getTitle())) {
+//                break;
+//            }
+            Element elementsContainingTitle = document.getElementsContainingOwnText(title.text()).first().parent();
+            System.out.println(elementsContainingTitle);
+//            Article newArticle = new Article(sourceId, title);
+
         }
     }
 

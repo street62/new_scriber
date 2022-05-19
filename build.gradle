@@ -13,9 +13,9 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+//	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	runtimeOnly 'mysql:mysql-connector-java'
+//	runtimeOnly 'mysql:mysql-connector-java'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
 	implementation group: 'org.jsoup', name: 'jsoup', version: '1.14.2'
