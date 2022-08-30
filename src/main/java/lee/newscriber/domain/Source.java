@@ -1,21 +1,21 @@
 package lee.newscriber.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Source {
     @Id
-    @Column(name = "SOURCE_ID")
-    private long id;
+    private Long id;
     private String title;
-    private String url;
+    @ManyToOne
+    @JoinColumn(name = "collection_id")
+    private Collection collection;
+    private String baseUrl;
     private String titleTag;
     private String contentTag;
+    private String dateTag; // 추후 값 타입으로 수정
     @OneToMany(mappedBy = "article")
     private List<Article> articles = new ArrayList<>();
 }

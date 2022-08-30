@@ -8,11 +8,13 @@ public class Article {
     @Id @GeneratedValue
     private long articleId;
     @ManyToOne
-    @JoinColumn(name = "SOURCE_ID")
+    @JoinColumn(name = "source_id")
     private Source source;
     private String url;
     private String title;
     private String content;
+    private LocalDateTime createdAt;
+    private Boolean isRead;
 
     public Article() {
 
