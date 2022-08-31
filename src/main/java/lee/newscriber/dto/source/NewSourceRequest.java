@@ -1,4 +1,4 @@
-package lee.newscriber.dto;
+package lee.newscriber.dto.source;
 
 public class NewSourceRequest {
 }

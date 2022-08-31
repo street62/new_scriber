@@ -1,12 +1,15 @@
 package lee.newscriber.repository;
 
+import lee.newscriber.domain.Article;
+import lee.newscriber.domain.Source;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class SourceRepository {
-    public void getSourceList() {
-    }
+import java.util.List;
 
-    public void getArticlesFrom(long sourceId) {
-    }
+@Repository
+public interface SourceRepository extends JpaRepository<Source, Long> {
+    List<Source> getSourceList();
+
+    List<Article> getArticlesFrom(long sourceId);
 }
