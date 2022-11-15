@@ -5,6 +5,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class RssHandler extends DefaultHandler {
@@ -25,7 +26,10 @@ public class RssHandler extends DefaultHandler {
                 break;
             case "title":
             case "description":
+            case "pubDate":
                 sb = new StringBuilder();
+                break;
+            default:
                 break;
         }
     }
@@ -47,6 +51,16 @@ public class RssHandler extends DefaultHandler {
                 latest = feed.getLatestArticle().orElseThrow(IllegalArgumentException::new);
                 latest.setContent(sb.toString());
                 break;
+            case "pubDate":
+                if (feed.getArticles().size() == 0) {
+                    break;
+                }
+                String dateTimeString = sb.toString();
+                DateTimeFormatter formatter = getDateTimeFormatter(dateTimeString);
+                latest = feed.getLatestArticle().orElseThrow(IllegalArgumentException::new);
+                ZonedDateTime time = ZonedDateTime.parse(sb.toString(), formatter);
+                latest.setCreatedAt(time);
+                break;
             default:
                 break;
         }
@@ -63,5 +77,13 @@ public class RssHandler extends DefaultHandler {
 
     public Feed getFeed() {
         return feed;
+    }
+
+    private DateTimeFormatter getDateTimeFormatter(String dateTimeString) {
+        char lastChar = dateTimeString.charAt(dateTimeString.length() - 1);
+        if (Character.isDigit(lastChar)) {
+            return DateTimeFormatter.ofPattern(DateTimeFormat.ZONE_OFFSET_FOUR_DIGITS.getFormat());
+        }
+        return DateTimeFormatter.ofPattern(DateTimeFormat.ZONE_NAME.getFormat());
     }
 }
